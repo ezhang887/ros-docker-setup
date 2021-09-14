@@ -2,10 +2,33 @@
 
 set -e
 
-IMAGE_NAME="cs588-ros-simulator:latest"
-HOST_WORKSPACE_DIR="/home/ezhang/workspace"
+GREEN="\033[0;32m"
+NOCOLOR="\033[0m"
 
+if [ $# != 1 ]
+then
+    echo "Usage: ./run.sh <workspace_directory>"
+    echo "The <workspace_directory> will be mounted to /root/workspace inside the container."
+    exit 1
+fi
+
+if [ ! -d $1 ]
+then
+    echo -e "${GREEN}Note: $1 is not an existing directory. It will be automatically created... ${NOCOLOR}"
+fi
+
+cleanup () {
+    xhost -local:docker
+}
+trap cleanup EXIT
+
+IMAGE_NAME="cs588-ros-simulator:latest"
+HOST_WORKSPACE_DIR=$(readlink -f $1)
+CONTAINER_WORKSPACE_DIR="/root/workspace"
+
+echo "Building image at $IMAGE_NAME"
 docker build . -t $IMAGE_NAME
+echo "Built image $IMAGE_NAME"
 
 XAUTH=/tmp/.docker.xauth
 if [ ! -f $XAUTH ]
@@ -22,14 +45,14 @@ fi
 
 xhost +local:docker
 
+echo -e "${GREEN}$HOST_WORKSPACE_DIR will be mounted as $CONTAINER_WORKSPACE_DIR in the container ${NOCOLOR}"
+
 docker run -it \
     --env="DISPLAY=$DISPLAY" \
     --env="QT_X11_NO_MITSHM=1" \
     --volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" \
     --env="XAUTHORITY=$XAUTH" \
     --volume="$XAUTH:$XAUTH" \
-    --volume="$HOST_WORKSPACE_DIR:/root/workspace" \
+    --volume="$HOST_WORKSPACE_DIR:$CONTAINER_WORKSPACE_DIR" \
     --runtime=nvidia \
     $IMAGE_NAME
-
-xhost -local:docker
