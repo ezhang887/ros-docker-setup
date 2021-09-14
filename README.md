@@ -15,7 +15,7 @@ To run the script:
 ./run.sh <path_to_ros_workspace_on_host>
 ```
 
-It will first build a docker image called `cs588-ros-simulator:latest` based on the `Dockerfile` in this repo. Then, it will start a docker container that is able to run ROS Noetic, rviz, and Gazebo with working GUIs. The `<path_to_ros_workspace_on_host>` will be mounted as `/root/workspace` in the docker container, so the files in the ROS workspace will be accessible / reusable even after the container has exited.
+It will first build a docker image called `cs588-ros-simulator:latest` based on the `Dockerfile` in this repo. Then, it will start a docker container using that image that is able to run ROS Noetic, rviz, and Gazebo with working GUIs. The `<path_to_ros_workspace_on_host>` will be mounted as `/root/workspace` in the docker container, so the files in the ROS workspace will be accessible / reusable even after the container has exited.
 
 # Demo
 Demo video link: https://youtu.be/e3t--Cn2jRw
