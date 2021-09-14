@@ -1,6 +1,6 @@
 # ros-docker-setup
 
-# What 
+# What / Why
 This repo contains a setup to run  [ROS Noetic](http://wiki.ros.org/noetic), [rviz](http://wiki.ros.org/rviz), and [Gazebo](https://gazebosim.org) in a docker container.
 
 It's originally created for my [CS 588](http://luthuli.cs.uiuc.edu/~daf/courses/MAAV-21/588-2021-home.html) class at UIUC, but it can be useful in other similar settings. I had to run a set of ROS packages (with Gazebo for simulation and rviz for visualization) built on top of ROS Noetic, but my own machine was unable to run ROS Noetic due to it having an older version of linux (ROS Noetic requires Ubuntu 20).
